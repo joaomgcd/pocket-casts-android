@@ -3,7 +3,9 @@ package au.com.shiftyjelly.pocketcasts.repositories.playback
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import au.com.shiftyjelly.pocketcasts.models.entity.Episode
 import au.com.shiftyjelly.pocketcasts.repositories.playback.PlaybackManager.PlaybackSource
+import au.com.shiftyjelly.pocketcasts.repositories.podcast.EpisodeManager
 import au.com.shiftyjelly.pocketcasts.repositories.podcast.PodcastManager
 import au.com.shiftyjelly.pocketcasts.utils.log.LogBuffer
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,10 +26,12 @@ class PlayerBroadcastReceiver : BroadcastReceiver() {
         const val INTENT_ACTION_PAUSE = "au.com.shiftyjelly.pocketcasts.action.PAUSE"
         const val INTENT_ACTION_STOP = "au.com.shiftyjelly.pocketcasts.action.STOP"
         const val INTENT_ACTION_NEXT = "au.com.shiftyjelly.pocketcasts.action.NEXT"
+        const val INTENT_ACTION_ARCHIVE = "au.com.shiftyjelly.pocketcasts.action.ARCHIVE"
     }
 
     @Inject lateinit var podcastManager: PodcastManager
     @Inject lateinit var playbackManager: PlaybackManager
+    @Inject lateinit var episodeManager: EpisodeManager
     private val playbackSource = PlaybackSource.PLAYER_BROADCAST_ACTION
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -41,6 +45,7 @@ class PlayerBroadcastReceiver : BroadcastReceiver() {
                 INTENT_ACTION_NEXT -> playNext()
                 INTENT_ACTION_SKIP_FORWARD -> skipForward()
                 INTENT_ACTION_SKIP_BACKWARD -> skipBackward()
+                INTENT_ACTION_ARCHIVE -> archive()
             }
             // To help us with debugging user support emails log where the user took the action.
             val logFrom = when (intent.action) {
@@ -74,5 +79,11 @@ class PlayerBroadcastReceiver : BroadcastReceiver() {
 
     private fun stop() {
         playbackManager.stopAsync(playbackSource = playbackSource)
+    }
+
+    private fun archive() {
+        val episode = playbackManager.upNextQueue.currentEpisode ?: return
+        if(episode !is Episode) return
+        episodeManager.archive(episode, playbackManager, true)
     }
 }
