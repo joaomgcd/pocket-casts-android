@@ -447,6 +447,7 @@
                 <action android:name="au.com.shiftyjelly.pocketcasts.action.SKIP_FORWARD"/>
                 <action android:name="au.com.shiftyjelly.pocketcasts.action.SKIP_BACKWARD"/>
                 <action android:name="au.com.shiftyjelly.pocketcasts.action.REFRESH_PODCASTS"/>
+                <action android:name="au.com.shiftyjelly.pocketcasts.action.ARCHIVE"/>
             </intent-filter>
         </receiver>
 
