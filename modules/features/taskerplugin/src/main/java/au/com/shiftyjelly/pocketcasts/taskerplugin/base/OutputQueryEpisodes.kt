@@ -5,7 +5,7 @@ import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 
 private const val OUTPUT_PREFIX = "episode_"
 
-class OutputQueryEpisodes(
+class OutputQueryEpisodes constructor(
     @get:TaskerOutputVariable("${OUTPUT_PREFIX}uuid", labelResIdName = "episode_id", htmlLabelResIdName = "episode_id_description") var id: String?,
     @get:TaskerOutputVariable("${OUTPUT_PREFIX}title", labelResIdName = "episode_title") var title: String?,
     @get:TaskerOutputVariable("${OUTPUT_PREFIX}download_url", labelResIdName = "download_url") var downloadUrl: String?,
@@ -13,6 +13,7 @@ class OutputQueryEpisodes(
     @get:TaskerOutputVariable("${OUTPUT_PREFIX}date_published", labelResIdName = "date_published") var datePublished: String?,
     @get:TaskerOutputVariable("${OUTPUT_PREFIX}duration", labelResIdName = "filters_duration") var duration: Double?,
     @get:TaskerOutputVariable("${OUTPUT_PREFIX}played_percentage", labelResIdName = "played_percentage") var playedPercentage: Int?,
+    @get:TaskerOutputVariable("${OUTPUT_PREFIX}podcast_uuid", labelResIdName = "podcast_id", htmlLabelResIdName = "podcast_id_description") var podcastUuid: String?,
 ) {
-    constructor(episode: Episode) : this(episode.uuid, episode.title.formattedForTasker, episode.downloadUrl, episode.playingStatus.ordinal, episode.publishedDate.formattedForTasker, episode.duration, episode.playedPercentage)
+    constructor(episode: Episode) : this(episode.uuid, episode.title.formattedForTasker, episode.downloadUrl, episode.playingStatus.ordinal, episode.publishedDate.formattedForTasker, episode.duration, episode.playedPercentage, episode.podcastUuid)
 }
